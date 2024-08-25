@@ -27,7 +27,7 @@ public class PotionEffectConfiguration {
    * The type of potion effect.
    */
   @NotNull
-  PotionEffectType type;
+  PotionEffectType effectType;
 
   /**
    * The duration of the potion effect.

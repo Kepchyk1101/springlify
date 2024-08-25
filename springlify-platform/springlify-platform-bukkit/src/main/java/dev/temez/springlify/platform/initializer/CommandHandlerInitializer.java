@@ -1,6 +1,7 @@
 package dev.temez.springlify.platform.initializer;
 
 import dev.temez.springlify.platform.annotation.BukkitCommand;
+import dev.temez.springlify.platform.annotation.IgnoreCommandRegistration;
 import dev.temez.springlify.platform.server.ServerPlatformAdapter;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -30,6 +31,9 @@ public class CommandHandlerInitializer implements BeanPostProcessor {
   public @NotNull Object postProcessAfterInitialization(@NotNull Object bean, @NotNull String beanName) throws BeansException {
     Class<?> beanClass = bean.getClass();
     if (bean instanceof CommandExecutor executor && !(bean instanceof JavaPlugin)) {
+      if (beanClass.isAnnotationPresent(IgnoreCommandRegistration.class)) {
+        return bean;
+      }
       BukkitCommand commandAnnotation = beanClass.getAnnotation(BukkitCommand.class);
       if (commandAnnotation == null) {
         log.warn("{} implements CommandExecutor but is not annotated with @BukkitCommand, so it won't be registered.", beanClass.getName());
